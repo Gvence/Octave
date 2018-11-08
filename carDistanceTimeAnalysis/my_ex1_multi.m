@@ -1,53 +1,59 @@
 fprintf('Loading data ...\n');
-data = load('ex1data2.txt');
-X = data(:, 1:2);
-y = data(:, 3);
+data = load('dis_record.txt');
+X = -data(:, 2);
+y = data(:, 1);
 m = length(y);
 fprintf('First 10 examples from the dataset: \n');
-fprintf(' x = [%.0f %.0f], y = %.0f \n', [X(1:10,:) y(1:10,:)]');
-fprintf('Program paused. Press enter to continue.\n');
-pause;
-
+fprintf(' x = [%.2f], y = %.2f \n', [X(:,:) y(:,:)]');
+figure;
+plot(X(:, 1), y(:, 1), 'xb', 10);
+xlabel('time');
+ylabel('distance');
+title('point plot');
+print -dpng 'point plot';
+hold on;
 %%==============featureNormalize=================
 fprintf('Normalizing Features ...\n');
-[X mu sigma] = featureNormalize(X);
+#[X mu sigma] = featureNormalize(X);
 
 X = [ones(m,1),X];
 %%================end============================
-
+   
 %%===================Gradient Descent================
 fprintf('Running gradient descent ...\n');
 alpha = 0.01;
-num_iters = 400;
-theta = zeros(3, 1);
+num_iters = 150;
+theta = zeros(2, 1);
 [theta, J_history] = gradientDescentMulti(X, y, theta, alpha, num_iters);
+plot((0.1:0.1:10)', [ones(100,1), (0.1:0.1:10)']*theta, '-r', 5)
+print -dpng 'linear regression';
+hold off;
 figure;
 plot(1:numel(J_history), J_history, '-b', 'LineWidth', 2);
 xlabel('Number of iterations');
 ylabel('Cost J');
-print -dpng 'Gradient Descent Mulit Cost Curve';
+title ('Gradient Descent Mulit Cost Plot')
+print -dpng 'Gradient Descent Mulit Cost Plot';
 fprintf('Theta computed from gradient descent: \n');
 fprintf(' %f \n', theta);
 fprintf('\n');
-price = [1, (([1650, 3].-mu)./sigma)]*theta;
-fprintf(['Predicted price of a 1650 sq-ft, 3 br house '... 
+price = [1, (([5].-mu)./sigma)]*theta;
+fprintf(['Predicted distance of 5 seconds '... 
          '(using gradient descent):\n $%f\n'], price);
-fprintf('Program paused. Press enter to continue.\n');
-pause;
 
 %%=========================end========================
 
 %% ================ Normal Equations ================
-data = csvread('ex1data2.txt');
-X = data(:, 1:2);
-y = data(:, 3);
+data = load('dis_record.txt');
+X = -data(:, 2);
+y = data(:, 1);
 m = length(y);
 X = [ones(m, 1) X];
 theta = normalEqn(X, y);
 fprintf('Theta computed from the normal equations: \n');
 fprintf(' %f \n', theta);
 fprintf('\n');
-price = [1, 1650, 3]*theta; 
-fprintf(['Predicted price of a 1650 sq-ft, 3 br house ' ...
+price = [1, 5]*theta; 
+fprintf(['Predicted distance of 5 seconds ' ...
          '(using normal equations):\n $%f\n'], price);
 %%=====================end===========================

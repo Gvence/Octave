@@ -25,9 +25,9 @@ sigma = zeros(1, size(X, 2));
 %
 % Hint: You might find the 'mean' and 'std' functions useful.
 %
-mu = [mean(X(: , 1)), mean(X(: , 2))];%mean(A),求A中所有元素的平均值 
-sigma = [std(X(: , 1)), std(X(: , 2))];     
-X_norm = [(X(: , 1) - mu(:, 1))./sigma(: , 1) ,(X(: , 2)- mu(:, 2))./sigma(: , 2)];
+mu = [mean(X(: , 1))];%mean(A),求A中所有元素的平均值 
+sigma = [std(X(: , 1))];     
+X_norm = [(X(: , 1) - mu(:, 1))./sigma(: , 1)];
 
 
 
